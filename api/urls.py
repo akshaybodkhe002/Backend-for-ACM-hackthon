@@ -1,5 +1,14 @@
-from django.urls import path, include
+from django.urls import path , register_converter
+from .views import userRequest, stationRequest, slotBooking, slotBookingPost, slotBookingPatch
+from .converter import DateConverter
+
+register_converter(DateConverter, 'date')
 
 urlpatterns = [
-    path('',include('api.urls')),
+    path('register/', userRequest.as_view() ),
+    path('stationRegister/', stationRequest.as_view()),
+    path('stationRegister/<int:pk>/', stationRequest.as_view()),
+    path('slotbooking/<int:pk>/<date:mydate>/', slotBooking),
+    path('slotBookingPost/', slotBookingPost),
+    path('slotBookingPatch/<int:pk>', slotBookingPatch),
 ]

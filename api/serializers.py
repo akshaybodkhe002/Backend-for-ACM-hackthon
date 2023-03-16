@@ -9,9 +9,9 @@ class UserSerializer(serializers.ModelSerializer):
 class StationSerializer(serializers.ModelSerializer):
     class Meta:
         model=Station
-        fields =('stationid','station_name', 'latitude', 'longitude')
+        fields =('stationid','station_name','address', 'latitude', 'longitude')
 
-class StationSlotSerializer(serializers.ModelSerializer):
+class SlotsSerializer(serializers.ModelSerializer):
     class Meta:
         model=StationAvailableSlots
         fields =('stationid','date', 'slot1', 'slot2','slot3','slot4','slot5','slot6','slot7','slot8','slot9','slot10','slot11','slot12')
