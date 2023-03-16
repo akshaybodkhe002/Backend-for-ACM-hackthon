@@ -13,6 +13,7 @@ class User(models.Model):
 class Station(models.Model):
     stationid = models.AutoField(primary_key=True)
     station_name = models.CharField(max_length=100)
+    address = models.CharField(max_length=200)
     latitude = models.CharField(max_length=100, null=True,blank=True ,default=None)
     longitude = models.CharField(max_length=100, null=True,blank=True, default=None)
 
@@ -31,4 +32,8 @@ class StationAvailableSlots(models.Model):
     slot10=models.BooleanField(default=False)
     slot11=models.BooleanField(default=False) 
     slot12=models.BooleanField(default=False)
+
+    class Meta:
+        db_table = 'StationAvailableSlots'
+        unique_together = (('stationid', 'date'))
 
