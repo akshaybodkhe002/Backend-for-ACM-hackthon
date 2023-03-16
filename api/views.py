@@ -7,6 +7,9 @@ from rest_framework.response import Response
 from django.http import Http404
 from rest_framework.decorators import api_view
 from datetime import date
+from rest_framework.parsers import JSONParser
+import io
+import json
 # class based seri to 
 class userRequest(APIView):
 
@@ -63,9 +66,9 @@ class stationRequest(APIView):
             serializer = StationSerializer(snippets, many=True)
             return Response(serializer.data)
 
-
+# To display avaliable slots to user
 @api_view(['GET'])
-def slotBooking(request , pk , mydate=date.today()):
+def slotBooking(request , pk , mydate=str(date.today())):
     print(pk)
     print(mydate)
     if request.method == 'GET':
@@ -79,35 +82,42 @@ def slotBooking(request , pk , mydate=date.today()):
 def slotBookingPost(request):
     if request.method == 'POST':
         print('132.......')
-        data = request.data
-        serializer = SlotsSerializer(data = data)
+        # data = request.data
+        data = JSONParser().parse(request)
+        print(data)
+        serializer = SlotsSerializer(data = data,partial=True)
+        print(serializer)
+                  
         print("188.......")
         if serializer.is_valid():
             print("388.....")
             serializer.save()
             return JsonResponse("Your slot is booked (method called [POST])", safe=False)
-        return JsonResponse("Some went wrong, please try again[Post]", safe=False)
+        else:
+            serialized_data = serializer.data
+            print("Else.....")
+            print(serialized_data['stationid'])
+            id = serialized_data['stationid']
+            dt = serialized_data['date']
+            s1 = serialized_data['slot1']
+            s2 = serialized_data['slot2']
+            s3 = serialized_data['slot3']
+            s4 = serialized_data['slot4']
+            s5 = serialized_data['slot5']
+            s6 = serialized_data['slot6']
+            s7 = serialized_data['slot7']
+            s8 = serialized_data['slot8']
+            s9 = serialized_data['slot9']
+            s10 = serialized_data['slot10']
+            s11 = serialized_data['slot11']
+            s12 = serialized_data['slot12']
+            en = StationAvailableSlots.objects.filter(stationid=id, date = dt).update(slot1=s1,slot2=s2,slot3=s3,slot4=s4,slot5=s5,slot6=s6,slot7=s7,slot8=s8,slot9=s9,slot10=s10,slot11=s11,slot12=s12,);
 
-@api_view(['PATCH'])
-def slotBookingPatch(request,pk):
-    print("389.......")
-    if request.method == 'PATCH':
-            try:	
-                # stationid = pk
-                print("38idjid....")
-                if StationAvailableSlots.objects.filter(stationid=pk):
-                    print('inlsi888....')
-                    id_inbody = request.data.get('stationid')
-                    if pk != id_inbody:
-                        device = StationAvailableSlots.objects.get(stationid=pk)
-                        serializer = SlotsSerializer(device,data=request.data)
-                        if serializer.is_valid():
-                            serializer.save()
-                            return JsonResponse("Your slot is booked(method called [PATCH]", safe=False)
-                        return Response(serializer.errors)
-                    else:
-                        return JsonResponse("You cannot change station id", safe=False)
-                return Response(serializer.errors)
-            except Exception as e :
-                    return JsonResponse("Some went wrong, please try again", safe=False)
+            print("en.....   :  ",en)
+            
+            return JsonResponse("Your slot is booked.[Update method]", safe=False)
+
+    return JsonResponse("Some went wrong, please try again[Post]", safe=False)
+
+
 
