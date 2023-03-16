@@ -73,10 +73,17 @@ def slotBooking(request , pk , mydate=str(date.today())):
     print(mydate)
     if request.method == 'GET':
         print('1.......')
-        data = StationAvailableSlots.objects.filter(stationid=pk)
-        print("2..........")
-        serializer = SlotsSerializer(data, many=True)
-        return Response(serializer.data)
+        data = StationAvailableSlots.objects.filter(stationid=pk,date=mydate).exists()
+        print(data)
+        if data == True:
+            print("2..........")
+            serializer = SlotsSerializer(data, many=True)
+            return Response(serializer.data)
+        else:
+            print("ele.....")
+            # en = StationAvailableSlots(stationid = pk, date = mydate ).save()
+            # serializer = SlotsSerializer(en, many=True)
+            return Response({'msg':'All slots are availabe!'} )
 
 @api_view(['POST'])
 def slotBookingPost(request):
@@ -111,11 +118,14 @@ def slotBookingPost(request):
             s10 = serialized_data['slot10']
             s11 = serialized_data['slot11']
             s12 = serialized_data['slot12']
-            en = StationAvailableSlots.objects.filter(stationid=id, date = dt).update(slot1=s1,slot2=s2,slot3=s3,slot4=s4,slot5=s5,slot6=s6,slot7=s7,slot8=s8,slot9=s9,slot10=s10,slot11=s11,slot12=s12,);
-
-            print("en.....   :  ",en)
-            
-            return JsonResponse("Your slot is booked.[Update method]", safe=False)
+            if StationAvailableSlots.objects.filter(stationid=id,date = dt).exists():
+                print("13.....")
+                StationAvailableSlots.objects.filter(stationid=id, date = dt).update(slot1=s1,slot2=s2,slot3=s3,slot4=s4,slot5=s5,slot6=s6,slot7=s7,slot8=s8,slot9=s9,slot10=s10,slot11=s11,slot12=s12);
+                return JsonResponse("Your slot is booked.[Update method]", safe=False)
+            else:
+                print("838.....")
+                StationAvailableSlots.objects(stationid=id, date = dt,slot1=s1,slot2=s2,slot3=s3,slot4=s4,slot5=s5,slot6=s6,slot7=s7,slot8=s8,slot9=s9,slot10=s10,slot11=s11,slot12=s12).save()
+                return JsonResponse("Your slot is booked.[Update method]", safe=False)
 
     return JsonResponse("Some went wrong, please try again[Post]", safe=False)
 
