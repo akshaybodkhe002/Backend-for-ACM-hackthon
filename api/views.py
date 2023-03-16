@@ -73,11 +73,12 @@ def slotBooking(request , pk , mydate=str(date.today())):
     print(mydate)
     if request.method == 'GET':
         print('1.......')
-        data = StationAvailableSlots.objects.filter(stationid=pk,date=mydate).exists()
-        print(data)
-        if data == True:
+        d = StationAvailableSlots.objects.filter(stationid=pk,date=mydate)
+        print(d)
+        if bool(d):
             print("2..........")
-            serializer = SlotsSerializer(data, many=True)
+            serializer = SlotsSerializer(d, many=True)
+            print("3.......")
             return Response(serializer.data)
         else:
             print("ele.....")
@@ -124,7 +125,7 @@ def slotBookingPost(request):
                 return JsonResponse("Your slot is booked.[Update method]", safe=False)
             else:
                 print("838.....")
-                StationAvailableSlots.objects(stationid=id, date = dt,slot1=s1,slot2=s2,slot3=s3,slot4=s4,slot5=s5,slot6=s6,slot7=s7,slot8=s8,slot9=s9,slot10=s10,slot11=s11,slot12=s12).save()
+                StationAvailableSlots.objects(stationid_id=id, date = dt,slot1=s1,slot2=s2,slot3=s3,slot4=s4,slot5=s5,slot6=s6,slot7=s7,slot8=s8,slot9=s9,slot10=s10,slot11=s11,slot12=s12).save()
                 return JsonResponse("Your slot is booked.[Update method]", safe=False)
 
     return JsonResponse("Some went wrong, please try again[Post]", safe=False)
