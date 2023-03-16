@@ -9,7 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
 class StationSerializer(serializers.ModelSerializer):
     class Meta:
         model=Station
-        fields =('stationid','station_name','address', 'latitude', 'longitude')
+        fields =('station_name','address', 'latitude', 'longitude')
 
 class SlotsSerializer(serializers.ModelSerializer):
     class Meta:

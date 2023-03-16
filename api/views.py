@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .serializers import UserSerializer, StationSerializer, SlotsSerializer
-from .models import Station, StationAvailableSlots
+from .models import Station, StationAvailableSlots, User
 from rest_framework.views import APIView
 from django.http.response import JsonResponse
 from rest_framework.response import Response
@@ -17,6 +17,23 @@ class userRequest(APIView):
             serializer.save()
             return JsonResponse("User Created Successfully.", safe=False)
         return JsonResponse("User Registration Failed!", safe=False)
+
+    # def get(self, request, *args, **kwargs):
+    #     pk = self.kwargs.get('pk')
+    #     print(pk)
+    #     if pk:
+    #         try:
+    #             stationData = User.objects.get(email=pk)
+    #             print("Station DAta -->", stationData)
+    #             serializer = UserSerializer(stationData)
+    #             return JsonResponse( serializer.data, safe=False)
+    #         except User.DoesNotExist:
+    #             raise Http404
+    #     else:
+    #         snippets = User.objects.all()
+    #         serializer = UserSerializer(snippets, many=True)
+    #         return JsonResponse(serializer.data, safe=False)
+    
 
 
 

@@ -6,6 +6,7 @@ register_converter(DateConverter, 'date')
 
 urlpatterns = [
     path('register/', userRequest.as_view() ),
+    # path('register/<string>', userRequest.as_view() ),  # To send user data to frontend
     path('stationRegister/', stationRequest.as_view()),
     path('stationRegister/<int:pk>/', stationRequest.as_view()),
     path('slotbooking/<int:pk>/<date:mydate>/', slotBooking),
