@@ -13,7 +13,7 @@ class User(models.Model):
 class Station(models.Model):
     stationid = models.AutoField(primary_key=True)
     station_name = models.CharField(max_length=100)
-    address = models.CharField(max_length=200)
+    address = models.CharField(max_length=200, default=None)
     latitude = models.CharField(max_length=100, null=True,blank=True ,default=None)
     longitude = models.CharField(max_length=100, null=True,blank=True, default=None)
 
